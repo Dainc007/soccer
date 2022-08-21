@@ -13,5 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [\App\Http\Controllers\Controller::class, 'index']
-)->name('index');
+Route::get('/', [App\Http\Controllers\PageController::class, 'index'])
+    ->name('index');
+
+require __DIR__.'/auth.php';
