@@ -37,7 +37,7 @@ class SkySports extends Api implements \App\Interfaces\ApiInterface
         }
     }
 
-    private function processResponse()
+    public function processResponse()
     {
         return ($this->response->body());
     }

@@ -7,19 +7,27 @@ use App\APIs\Youtube;
 
 
 use Goutte\Client;
+use Illuminate\Http\Request;
 
 class PageController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $skySportsApi = SkySports::getInstance();
-        $articles     = $skySportsApi->getArticles('arsenal');
-        $articles     = json_decode($articles, true);
+        if($request['teamName'])
+        {
+            $skySportsApi = SkySports::getInstance();
+            $articles     = $skySportsApi->getArticles($request['teamName']);
+            $articles     = json_decode($articles, true);
 
-        $youtubeApi = Youtube::getInstance();
-        $videos     = $youtubeApi->getVideos();
-        $videos     = json_decode($videos);
+            $youtubeApi = Youtube::getInstance();
+            $videos     = $youtubeApi->getVideos($request['teamName']);
+            $videos     = json_decode($videos);
+        }
 
-        return view('index', ['data' => $articles ?? [], 'videos' => $videos ?? []]);
+        return view('index', [
+                'data'   => $articles ?? [],
+                'videos' => $videos ?? [],
+            'availableTeams' => Youtube::getAvailableTeams() ?? []
+            ]);
     }
 }
